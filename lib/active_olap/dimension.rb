@@ -10,6 +10,8 @@ module ActiveOLAP
     attr_reader :joins
     attr_reader :conditions
     
+    attr_accessor :name
+    
     # creates a new Dimension, given a definition.
     # The definition can be:
     # - A name (Symbol) of registered definition
@@ -175,10 +177,10 @@ module ActiveOLAP
         
         # make the remaining fields available in the info object
         @info.merge!(hash)
-        
+        self.name = definition[:name].to_s
       when Symbol
         generate_field_dimension(definition)
-        
+        self.name = definition.to_s
       else
         raise "Invalid category definition! " + definition.inspect
       end      
@@ -207,6 +209,7 @@ module ActiveOLAP
     end
     
     def generate_trend_categories(trend_definition)
+      trend_definition = trend_definition.dup
       period_count     = trend_definition.delete(:periods) || trend_definition.delete(:period_count)    || 14      
       period_length    = trend_definition.delete(:period_length)   || 1.days
       trend_end        = trend_definition.delete(:end)             || Time.now.utc.midnight + 1.day

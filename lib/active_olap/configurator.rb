@@ -11,6 +11,9 @@ module ActiveOLAP
     
     # registers a dimension for the class it belongs to
     def dimension(name, definition = nil)
+      if definition.is_a?(Hash)
+        definition[:name] = name
+      end
       definition = name.to_sym if definition.nil?
       @klass.active_olap_dimensions[name] = definition
     end
