@@ -200,7 +200,7 @@ module ActiveOLAP
     end
     
     def generate_custom_categories(categories)
-      skip_other = false
+      skip_other = true
       categories.to_a.each do |category|
         skip_other = true if category.first == :other
         register_category(category.first, category.last) if category.last
